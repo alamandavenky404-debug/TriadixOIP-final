@@ -1,0 +1,6 @@
+{
+  "name": "TalentForge AI - Career Coach & Placement Capstone Platform",
+  "description": "AI-powered career coaching, ATS resume review, mock interviews, skill gap analysis, and placement capstone showcase.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

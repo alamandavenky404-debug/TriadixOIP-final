@@ -1,0 +1,106 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Candidate profile and placement targets",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Auth UID" },
+        "name": { "type": "string", "maxLength": 100, "description": "Candidate full name" },
+        "email": { "type": "string", "format": "email", "description": "User email" },
+        "targetRole": { "type": "string", "maxLength": 100, "description": "Target job title" },
+        "college": { "type": "string", "maxLength": 150, "description": "Institution name" },
+        "degree": { "type": "string", "maxLength": 150, "description": "Degree and branch" },
+        "graduationYear": { "type": "string", "maxLength": 10, "description": "Graduation year" },
+        "currentSkills": { "type": "array", "description": "List of technical skills" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "name", "email"]
+    },
+    "SavedJob": {
+      "title": "SavedJob",
+      "description": "Tracked job application",
+      "type": "object",
+      "properties": {
+        "jobId": { "type": "string", "description": "Unique job identifier" },
+        "title": { "type": "string", "maxLength": 150 },
+        "company": { "type": "string", "maxLength": 150 },
+        "location": { "type": "string", "maxLength": 100 },
+        "salary": { "type": "string", "maxLength": 100 },
+        "matchScore": { "type": "number" },
+        "status": { "type": "string", "enum": ["Saved", "Applied", "Interviewing", "Offer", "Rejected"] },
+        "appliedDate": { "type": "string" },
+        "notes": { "type": "string", "maxLength": 1000 },
+        "userId": { "type": "string" }
+      },
+      "required": ["jobId", "title", "company", "status", "userId"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Conversation message in multi-turn career chatbot",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string", "enum": ["user", "model", "assistant"] },
+        "content": { "type": "string", "maxLength": 10000 },
+        "modelUsed": { "type": "string", "maxLength": 50 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "userId", "role", "content"]
+    },
+    "InterviewSession": {
+      "title": "InterviewSession",
+      "description": "Historical mock interview attempt",
+      "type": "object",
+      "properties": {
+        "sessionId": { "type": "string" },
+        "userId": { "type": "string" },
+        "role": { "type": "string" },
+        "question": { "type": "string", "maxLength": 2000 },
+        "answer": { "type": "string", "maxLength": 10000 },
+        "score": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["sessionId", "userId", "question", "answer", "score"]
+    },
+    "UserBadge": {
+      "title": "UserBadge",
+      "description": "Virtual credential or badge earned in mock interviews",
+      "type": "object",
+      "properties": {
+        "badgeId": { "type": "string" },
+        "userId": { "type": "string" },
+        "title": { "type": "string" },
+        "tier": { "type": "string" },
+        "unlockedAt": { "type": "string", "format": "date-time" },
+        "credentialId": { "type": "string" },
+        "verificationHash": { "type": "string" }
+      },
+      "required": ["badgeId", "userId", "title"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile and career placement preferences"
+    },
+    "/users/{userId}/savedJobs/{jobId}": {
+      "schema": "SavedJob",
+      "description": "User saved and tracked job applications"
+    },
+    "/users/{userId}/chatMessages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Multi-turn Gemini chat session history"
+    },
+    "/users/{userId}/interviewSessions/{sessionId}": {
+      "schema": "InterviewSession",
+      "description": "Recorded mock interview sessions and grading"
+    },
+    "/users/{userId}/badges/{badgeId}": {
+      "schema": "UserBadge",
+      "description": "Virtual credentials and badges awarded to candidate"
+    }
+  }
+}
